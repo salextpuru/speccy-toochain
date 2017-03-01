@@ -1,0 +1,58 @@
+Zxsend - send file to ZX Spectrum via tape interface.
+	(produces output like SAVE would on a speccy)
+Public domain by Russell Marks, 1994-7.
+
+
+Description
+-----------
+
+Zxsend produces a sample which, if played at 8kHz from a soundcard
+with output connected to a speccy's tape input, is loadable on a
+speccy with LOAD "" or LOAD "" CODE. This can be very useful if you
+have a speccy with no serial interface (i.e. a bog standard 48k), etc.
+
+Though it's really intended for direct `downloading' of stuff to a
+speccy, you could record the output to tape, and load from that later
+or whatever.
+
+The defaults for different systems are:
+
+- Linux: output is a raw unsigned sample output to /dev/dsp;
+- Sun: output is a u-law sample output to /dev/audio;
+- MS-DOS: output is a .VOC file output to `out.voc';
+- Other: output is a u-law sample output to `out.raw'.
+
+You can alter these defaults by playing about with the definitions in
+the Makefile and zxsend.c, but most can be overridden with cmdline
+options. Do `zxsend -h' to see usage help.
+
+
+Compilation
+-----------
+
+Check the Makefile is ok, then do `make' and optionally (as root)
+`make install'.
+
+
+Contacting me
+-------------
+
+You can email me at rus@forfree.at but since I'm not on the net, mail
+received there is just posted to me at regular intervals by a friend
+(and similarly I post responses back to be emailed). It could take as
+long as six weeks for you to get a response - if that's a problem,
+then you could write to me directly instead (more hassle, but usually
+quicker).
+
+You can write to me at:
+		Russell Marks,
+		3 Rapley Close,
+		Camberley,
+		Surrey,
+		GU15 4ER,
+		United Kingdom.
+
+
+Share and enjoy! 
+
+-Rus.

@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [[ "$#" -ne 1 ]]; then
+	printf "Usage:\n\t$0 filename.trd\nExtract all file from TRD image\n"
+	exit
+fi
+
+NAME="$1"
+
+i=-2
+mktrd list "$NAME" | while read l ; do
+	if [[ "$i" -ge 0 ]]; then
+		s=( $l )
+		printf "${s[0]}.${s[1]}\t<\t$l\n"
+		mktrd pop "${s[0]}.${s[1]}" "$NAME" > /dev/null 2>&1
+	else
+		printf "\t\t$l\n"
+	fi
+	i=$(( $i + 1 ))
+done

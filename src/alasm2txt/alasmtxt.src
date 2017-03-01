@@ -1,0 +1,12 @@
+#!/bin/sh
+
+if [[ -z "$1" ]]; then
+	printf "Usage: alasmtxt <alasm file>"
+	exit 0
+fi
+
+for i in "$@"; do
+	alasm2txt "$i" "$i".asm~
+	iconv -cf 866 "$i".asm~ > "$i".asm
+	rm -f "$i".asm~
+done

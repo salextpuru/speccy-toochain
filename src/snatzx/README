@@ -1,0 +1,166 @@
+zspeccyutils 1.0 - various utils related to the Sinclair ZX Spectrum.
+Public domain by Russell Marks, 1994-1997, 1999.
+
+
+About the programs
+------------------
+
+This is a collection of various utils related to (or for) the Sinclair
+ZX Spectrum (more commonly known as the speccy :-)) which I've crufted
+together over the years. For ages I've been meaning to upload these
+somewhere, but never quite bothered.
+
+To be honest, I've not bothered very much even now :-), as some of the
+more obscure utils have just been dumped in an `unsorted' directory.
+Presumably if you want any of the stuff in there you're prepared to
+RTFS etc.
+
+Thanks to Alex Hornby and Henning Holtschneider for suggesting (IIRC)
+that I should upload zxsend, which is probably the most useful program
+here. Admittedly I did take about four years to get around to it,
+but... :-)
+
+
+Description (and documentation ;-))
+-----------
+
+There are lots of different programs included. Most are for Linux, and
+help you communicate with a speccy (an actual physical one, not an
+emulator). Some are useful in emulator-land too, though. :-) (zxtoppm,
+for example.)
+
+I imagine the most interesting ones are likely to be sendsna, zxsend,
+and zxgettap.
+
+The programs are:
+
+ldirsna		Write a file at a given address in a .sna file.
+		The address can be decimal or `0x'-prefixed hex.
+		Usage: ldirsna snap.sna insert_file addr_to_insert_at
+
+infosna		Give info on a .sna file (register values, mainly).
+		The reported SP is fiddled to reflect the speccy's
+		effective state when the snap is loaded, i.e. infosna
+		pretends PC isn't on the stack. :-)
+		Usage: infosna snap.sna
+
+pokesna		Change a byte at a given address in a .sna file.
+		The address/value can be decimal or `0x'-prefixed hex.
+		Usage: pokesna snap.sna address value
+
+ppmtozx		Filter which converts a 256x192 PPM to a 6912-byte
+		speccy screen. This is NOT intended to convert general
+		PPMs to speccy screens, but to convert back PPMs which
+		were originally converted from speccy screens.
+
+sendsna		Send a .sna file to a 48k speccy (or a 128/+2/+3 in
+		48k mode) via a soundcard (i.e. /dev/dsp). The speccy
+		loads it with LOAD "".
+		Usage: sendsna snap.sna /dev/dsp
+
+tapecat		(This util is for the speccy itself) Emulate the +3's
+		CAT "T:" tape-header reader, with some minor
+		extensions. The code is position-independent, so it
+		can be loaded/run anywhere. Example output:
+
+			"scr       " CODE 16384,6912
+			"bas       " LINE 1234 LEN 18
+			"basnoline " (BASIC) LEN 18
+			"string    " DATA a$(500)
+			"morestring" DATA q$(42)
+			"numarray  " DATA z(42)
+			"code      " CODE 32768,1024
+
+tzxplay		Send a .tzx file to a speccy via soundcard. This is
+		incomplete, but is good enough to send Matchday 2. :-)
+		Usage: tzxplay <input.tzx
+
+zxgettap	Read a speccy tape via soundcard, converting
+		everything read to a .tap file (most emulators can
+		read these). It can only read normal tape files - no
+		turboloaders will work. Headerless files are no
+		problem, though. I'm afraid zxgettap isn't 100%
+		reliable (it's quite good, but not that good), and
+		your soundcard must be capable of 44.1kHz recording
+		for it to work at all.
+		Usage: zxgettap >output.tap	(and ^C to quit. :-))
+
+zxsend		Send a file to a speccy via soundcard. Currently it
+		can only send raw files rather than .tap files. It's
+		primarily meant for sending m/c to a speccy, but it
+		can also send files as Basic if you want.
+		Usage: complicated, try `zxsend -h'.
+
+zxtoppm		Filter to convert a 6912-byte speccy screen to a PPM.
+		You can extract screens from .sna files with `dd
+		if=input.sna of=output.scr bs=1 skip=27 count=6912'.
+
+Note that the programs which play stuff to the speccy via /dev/dsp
+need the volume to be *VERY LOUD*. On my SB16, sending directly to my
+128 or +3 needs output gain at 100, and volume at 100 (though pcm
+should remain at the default 75). Recording the output on a old-style
+mono tape recorder works for me with output gain 0 and volume at 100.
+
+Note also that if you're connecting a mono tape lead to the
+(presumably stereo) output from your soundcard, you shouldn't pump
+this huge noise through both channels. :-) You should set the left
+channel to 100, and the right one to zero. For example, you can do
+this with rexima by using `rexima vol 100,0'.
+
+
+Installation
+------------
+
+Check the Makefile (it should be ok), then do `make', then (as root)
+`make install'. The stuff in `unsorted' isn't compiled/assembled or
+installed, nor is `tapecat' - if you want any of that stuff, you'll
+have to deal with it yourself.
+
+If you find any of the stuff in `unsorted' useful, let me know, and
+I'll try and document it a bit and automate installation.
+
+
+Danger Will Robinson
+--------------------
+
+WARNING - reading some of this code (especially the older stuff) is
+Considered Harmful. None of it is terribly elegant - when I said
+"crufted together" above, I meant it. (If you think zgv's code sucks,
+you ain't seen nothing yet. :-))
+
+
+Other speccy stuff by me
+------------------------
+
+`zfst', a terminal emulator for +3's which gives an 80x24 screen and
+also does XMODEM file transfers, is probably still available from here
+(though I haven't actually checked):
+
+ftp://ftp.nvg.unit.no/pub/sinclair/utils/spectrum/zfst01.zip
+
+It was originally written so I could use my +3 as a terminal to my
+Linux box, so it seems relevant to mention it here. :-)
+
+
+Contacting me
+-------------
+
+You can email me at rus@forfree.at but since I'm not on the net, mail
+received there is just posted to me at regular intervals by a friend
+(and similarly I post responses back to be emailed). It could take as
+long as six weeks for you to get a response - if that's a problem,
+then you could write to me directly instead (more hassle, but usually
+quicker).
+
+You can write to me at:
+		Russell Marks,
+		3 Rapley Close,
+		Camberley,
+		Surrey,
+		GU15 4ER,
+		United Kingdom.
+
+
+Share and enjoy! 
+
+-Rus.

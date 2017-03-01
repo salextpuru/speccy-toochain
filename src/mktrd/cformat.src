@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [[ -z "$1" ]]; then
+	printf "Format c-files\n"
+	printf "Usage:\n\t$0 <file>\n"
+	exit
+fi
+
+for i in $* ; do
+	printf "Format file: $i\n"
+	cat "$i" | tr '\r' '\n' | tr -s '\n' > "$i".edited
+	mv -f "$i".edited "$i"
+	astyle -T8 -n --mode=c --style=kr -F "$i" > /dev/null 2>&1
+done
+printf "All done.\n"
