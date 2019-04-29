@@ -224,7 +224,15 @@ void load_ini(char *name)
 
 			continue;
 		}
-
+		
+		// compression
+		if (!strcmp(t, STR(F_CMP)))
+		{
+			conf.packer = (C_PACK)num(v);
+			printf("Compression: \t%s\n", pack_txt[conf.packer + 1]);
+			continue;
+		}
+		
 		// block
 		if (!strcmp(t, STR(F_BLK))) {
 			int size;
@@ -246,7 +254,7 @@ void load_ini(char *name)
 			size = st.st_size;
 
 			if (size < 0) {
-				printf("%s: ", v);
+				fprintf(stderr, "%s: ", v);
 				error(FNFD);
 			}
 
@@ -391,7 +399,10 @@ void load_files()
 	for (int i = 0; i < conf.n_blocks; i++) {
 		FILE* f = fopen(blk[i].fname, "r");
 
-		if (!f) error(FNFD);
+		if (!f) {
+			fprintf(stderr, "%s: ", blk[i].fname);
+		       	error(FNFD);
+		}
 
 		hdr.blk[i].size = sz(blk[i].size);
 		fseek(f, blk[i].offset, SEEK_SET);
@@ -408,11 +419,15 @@ void unpack_spg(char* name)
 	// Read input SPG
 	FILE* f = fopen(name, "r");
 
-	if (!f) error(FERR);
+	if (!f) {
+		fprintf(stderr, "%s: ", name);
+	       	error(FERR);
+	}
 
 	struct stat st;
 
 	if(stat(name, &st)<0) {
+		fprintf(stderr, "%s: ", name);
 		error(FNFD);
 	}
 

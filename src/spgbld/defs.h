@@ -1,4 +1,5 @@
 #pragma once
+
 typedef unsigned long long u64;
 typedef signed long long i64;
 typedef unsigned long u32;
@@ -7,11 +8,13 @@ typedef unsigned short u16;
 typedef signed short i16;
 typedef unsigned char u8;
 typedef signed char i8;
+
 #define min(a,b)     (((a) < (b)) ? (a) : (b))
 #define sizeofarr(a) (sizeof(a) / sizeof(a[0]))
 #define sz(a)        (((a) - 1) >> 9)
 #define STR_EXPAND(tok) #tok
 #define STR(tok) STR_EXPAND(tok)
+
 // .spg defaults
 #define SPG_MAGIC  SpectrumProg
 #define SPG_VER    1
@@ -23,6 +26,7 @@ typedef signed char i8;
 #define SPG_CLK    0
 #define SPG_INT    0
 #define SPG_PGR    0
+
 // .ini fields
 #define F_DESC  desc
 #define F_START start
@@ -36,18 +40,22 @@ typedef signed char i8;
 #define F_MONTH month
 #define F_YEAR  year
 #define F_BLK   block
+#define F_CMP   compression
+
 enum C_MOD {
 	M_INFO = 0,
 	M_BLD,
 	M_CONV,
 	M_UNP
 };
+
 enum C_PACK {
 	PM_AUTO = -1,
 	PM_NONE,
 	PM_MLZ,
 	PM_HST
 };
+
 struct CONF {
 	C_PACK packer;
 	C_MOD mode;
@@ -55,6 +63,7 @@ struct CONF {
 	char* out_fname;
 	int n_blocks;
 };
+
 #pragma pack(push)
 #pragma pack(1)
 struct HDR {
@@ -95,10 +104,19 @@ struct HDR {
 		u8 page;
 	} blk[256];
 };
+
 #pragma pack(pop)
 struct BLK {
 	char fname[1024];
 	int offset;
 	int size;
 	u8 data[16384];
+};
+
+static const char *pack_txt[] =
+{
+  "auto",
+  "none",
+  "mlz",
+  "hrust"
 };
