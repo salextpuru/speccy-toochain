@@ -10,7 +10,7 @@
  */
 
 /* uncomment to disable bit optimisation */
-#define NO_FLIP
+// #define NO_FLIP
 
 #include <stdio.h>
 #include <stdlib.h>

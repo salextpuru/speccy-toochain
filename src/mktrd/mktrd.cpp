@@ -246,6 +246,31 @@ void list(const string fname) {
 	}
 }
 
+void nlist(const string fname) {
+	unsigned char *buf = new unsigned char[0xa0000];
+	int len=readfile(fname,buf);
+	if (len<1) {cout<<"Can't read file"<<endl; return;}
+	int mode=testsig(buf,len);
+	unsigned char* ptr = buf;
+	unsigned char i=0;
+	switch (mode) {
+		case 1:
+			ptr+=9;
+			for(;i<*(buf+8);i++) {
+				printf("%.8s.%.1s\n",ptr,ptr+8);
+				ptr+=14;
+			}
+			break;
+		case 2:
+			while (*ptr!=0 && i<128) {
+				if (*ptr!=1) printf("%.8s.%.1s\n",ptr,ptr+8);
+				ptr+=16; i++;
+			}
+			break;
+		default: cout<<"Unknown image format"<<endl; break;
+	}
+}
+
 void createtrd(const string fname) {
 	unsigned char *buf = new unsigned char[0xa0000];
 	*(buf+0x8e2)=0x01;
@@ -270,7 +295,8 @@ void createscl(const string fname) {
 
 void help(const string pname) {
 	cout<<"Usage:"<<endl;
-	cout<<pname<<" list filename\t\t\tlist of files"<<endl;
+	cout<<pname<<" list filename\t\t\tlist of files (formated)"<<endl;
+	cout<<pname<<" nlist filename\t\t\tlist of files (name.ext only)"<<endl;
 	cout<<pname<<" ctrd filename\t\t\tcreate new TRD"<<endl;
 	cout<<pname<<" cscl filename\t\t\tcreate new SCL"<<endl;
 	cout<<pname<<" add filename archname\t\tadd file to archive"<<endl;
@@ -282,6 +308,7 @@ int main(int ac,char* av[]) {
 	string mode(av[1]);
 	bool yeah=false;
 	if (mode=="list") {list(av[2]); yeah=true;}
+	if (mode=="nlist") {nlist(av[2]); yeah=true;}
 	if (mode=="ctrd") {createtrd(av[2]); yeah=true;}
 	if (mode=="cscl") {createscl(av[2]); yeah=true;}
 	if (mode=="pop" && ac>3) {extract(av[2],av[3]); yeah=true;}
